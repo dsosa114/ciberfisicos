@@ -38,7 +38,7 @@ Follow these steps to clone and compile the packages in your ROS 2 workspace:
 1.  Navigate to your ROS 2 workspace's source directory (e.g., `~/ros2_ws/src`).
 2.  Clone this repository:
     ```bash
-    git clone <URL_del_repositorio>
+    git clone https://github.com/dsosa114/ciberfisicos.git
     ```
 3.  Navigate back to the root of your workspace:
     ```bash
