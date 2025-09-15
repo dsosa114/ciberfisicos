@@ -61,7 +61,7 @@ The `final_project_helpers` package includes a launch file that simplifies runni
 To launch all the helper nodes (two table nodes, the conveyor node, and the battery model node), use the following command from your workspace's root directory:
 
 ```bash
-ros2 launch final_project_helpers start_helpers.launch.py
+ros2 launch final_project_helpers node_launcher.launch.py
 ```
 
 This command will start the entire static environment simulation, allowing you to connect your robot's navigation node and begin working on the autonomous logic.
