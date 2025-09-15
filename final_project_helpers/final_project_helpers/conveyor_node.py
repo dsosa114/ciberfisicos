@@ -44,6 +44,7 @@ class ConveyorNode(Node):
         supply_msg = Supply()
         supply_msg.header = Header()
         supply_msg.header.stamp = self.get_clock().now().to_msg()
+        supply_msg.header.frame_id = f'attending_material_request_{request_msg.material_id}'
         supply_msg.material_id = request_msg.material_id
         supply_msg.pickup_location = 'banda'
         

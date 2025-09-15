@@ -76,6 +76,7 @@ class TableNode(Node):
         msg = Request()
         msg.header = Header()
         msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = f'{self.table_id}_material_request'
         msg.material_id = self.material_type
         msg.destination_id = self.table_id
         
@@ -87,6 +88,7 @@ class TableNode(Node):
         msg = FinishedJob()
         msg.header = Header()
         msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = f'{self.table_id}_product_ready'
         msg.product_id = self.product_type
         msg.location_id = self.table_id
         return msg
