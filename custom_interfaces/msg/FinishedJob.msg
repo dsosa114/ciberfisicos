@@ -1,0 +1,3 @@
+std_msgs/Header header
+string product_id
+string location_id
