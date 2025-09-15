@@ -55,13 +55,18 @@ class TableNode(Node):
             self.get_logger().info(f'Received delivery of material {msg.product_id} at {msg.dropoff_location}.')
             self.is_request_sent = False
 
+        # Check if the delivery is for the conveyor
+        if msg.dropoff_location == 'banda' and msg.product_id == self.product_type:
+            self.jobs_in_pile -= 1
+            self.get_logger().info(f'Finished product {msg.product_id} was delivered at conveyor. Reducing the pile jobs to {self.jobs_in_pile}')
+
     def production_loop(self):
         # Request material if pile is low and no request is pending
         if self.jobs_in_pile < self.max_jobs and not self.is_request_sent:
             self.request_material()
         
         # Simulate production
-        if random.random() < 0.05:  # 5% chance of finishing a job per second
+        if random.random() < 0.025:  # 2.5% chance of finishing a job per second
             if self.jobs_in_pile < self.max_jobs:
                 self.jobs_in_pile += 1
                 self.get_logger().info(f'Table {self.table_id} finished a job. Pile size: {self.jobs_in_pile}.')
