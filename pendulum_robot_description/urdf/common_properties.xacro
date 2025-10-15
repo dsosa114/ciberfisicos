@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <material name="blue">
+        <color rgba="0 0 0.5 1" />
+    </material>
+
+    <material name="grey">
+        <color rgba="0.5 0.5 0.5 1" />
+    </material>
+
+    <material name="black">
+        <color rgba="0.05 0.05 0.05 1" />
+    </material>
+
+    <xacro:macro name="box_inertia" params="m l w h o_xyz o_rpy">
+        <inertial>
+            <origin xyz="${o_xyz}" rpy="${o_rpy}"/>
+            <mass value="${m}"/>
+            <inertia ixx="${m*(w*w + h*h)/12}" ixy="0.0" ixz="0.0" iyy="${m*(l*l + h*h)/12}" iyz="0.0" izz="${m*(w*w + l*l)/12}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="sphere_inertia" params="m r o_xyz o_rpy">
+        <inertial>
+            <origin xyz="${o_xyz}" rpy="${o_rpy}"/>
+            <mass value="${m}"/>
+            <inertia ixx="${2*m*r*r/5}" ixy="0.0" ixz="0.0" 
+                     iyy="${2*m*r*r/5}" iyz="0.0" 
+                     izz="${2*m*r*r/5}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="cylinder_inertia" params="m r l o_xyz o_rpy">
+        <inertial>
+            <origin xyz="${o_xyz}" rpy="${o_rpy}"/>
+            <mass value="${m}"/>
+            <inertia ixx="${m*(3*r*r + l*l)/12}" ixy="0.0" ixz="0.0" 
+                     iyy="${m*(3*r*r + l*l)/12}" iyz="0.0" 
+                     izz="${m*r*r/2}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="read_model_data" params="robot_parameters_file">
+        <!-- Read .yaml files from disk, load content into properties -->
+        <xacro:property name="config_robot_parameters" value="${xacro.load_yaml(robot_parameters_file)}"/>
+        <!-- Extract subsections from yaml dictionaries -->
+        <xacro:property name="linkage_properties" value="${config_robot_parameters['robot_parameters']}"/>
+        <!-- Vehicle Properties -->
+        <xacro:property name="width" value="${linkage_properties['width']}" scope="parent"/>
+        <xacro:property name="base_height" value="${linkage_properties['base_height']}" scope="parent"/>
+        <xacro:property name="base_mass" value="${linkage_properties['base_mass']}" scope="parent"/>
+        <xacro:property name="axle_offset" value="${linkage_properties['axle_offset']}" scope="parent"/>
+        <xacro:property name="rod_length" value="${linkage_properties['rod_length']}" scope="parent"/>
+        <xacro:property name="rod_radius" value="${linkage_properties['rod_radius']}" scope="parent"/>
+        <xacro:property name="rod_mass" value="${linkage_properties['rod_mass']}" scope="parent"/>
+        <xacro:property name="ball_radius" value="${linkage_properties['ball_radius']}" scope="parent"/>
+        <xacro:property name="ball_mass" value="${linkage_properties['ball_mass']}" scope="parent"/>
+        <xacro:property name="max_angular_velocity" value="${linkage_properties['max_angular_velocity']}" scope="parent"/>
+        <xacro:property name="max_effort" value="${linkage_properties['max_effort']}" scope="parent"/>
+        
+    </xacro:macro>
+
+
+</robot>

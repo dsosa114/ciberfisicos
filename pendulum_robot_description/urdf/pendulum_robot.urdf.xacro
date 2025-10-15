@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pendulum_robot">
+
+    <xacro:arg name="robot_parameters_file" default="$(find pendulum_robot_description)/config/parameters.yaml"/>
+
+    <xacro:include filename="$(find pendulum_robot_description)/urdf/kinematic_chain.xacro"/>
+
+    <link name="world"/>
+    <xacro:pendulum_robot_generator
+        parent="world" 
+        config_params_file="$(arg robot_parameters_file)"
+    />
+    
+</robot>
