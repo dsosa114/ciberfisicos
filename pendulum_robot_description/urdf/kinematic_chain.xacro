@@ -5,26 +5,75 @@
     <xacro:macro name="pendulum_robot_generator" params="parent config_params_file">
         <xacro:read_model_data robot_parameters_file="${config_params_file}"/>
         <link name="base_link">
-            <xacro:box_inertia l="" w="" h="" m="" o_xyz="" o_rpy=""/>
+            <xacro:box_inertia l="${width}" w="${width}" h="${base_height}" m="${base_mass}" o_xyz="0.0 0.0 ${base_height/2.0}" o_rpy="0.0 0.0 0.0"/>
             <visual>
-                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <origin xyz="0.0 0.0 ${base_height/2.0}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <box size="0.0 0.0 0.0"/>
+                    <box size="${width} ${width} ${base_height}"/>
                 </geometry>
                 <material name="blue"/>
             </visual>
             <collision>
-                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <origin xyz="0.0 0.0 ${base_height/2.0}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <box size="0.0 0.0 0.0"/>
+                    <box size="${width} ${width} ${base_height}"/>
                 </geometry>
             </collision>
         </link>
+
+        <link name="rod_link">
+            <xacro:cylinder_inertia l="${rod_length}" r="${rod_radius}" m="${rod_mass}" o_xyz="0.0 0.0 ${rod_length/2.0}" o_rpy="0.0 0.0 0.0"/>
+            <visual>
+                <origin xyz="0.0 0.0 ${rod_length/2.0}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${rod_radius}" length="${rod_length+axle_offset}"/>
+                </geometry>
+                <material name="green"/>
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 ${rod_length/2.0}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${rod_radius}" length="${rod_length}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="ball_link">
+            <xacro:sphere_inertia r="${ball_radius}" m="${ball_mass}" o_xyz="0.0 0.0 0.0" o_rpy="0.0 0.0 0.0"/>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <sphere radius="${ball_radius}"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <sphere radius="${ball_radius}"/>
+                </geometry>
+            </collision>
+        </link>
+
         <joint name="base_joint" type="fixed">
             <parent link="${parent}"/>
             <child link="base_link"/>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </joint>
-            
+
+        <joint name="shoulder_lift_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="rod_link"/>
+            <axis xyz="0 1 0"/>
+            <limit velocity="${max_angular_velocity}" effort="${max_effort}"/>
+            <origin xyz="0 ${width/2.0+ball_radius} ${base_height-axle_offset}" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="ball_joint" type="fixed">
+            <parent link="rod_link"/>
+            <child link="ball_link"/>
+            <origin xyz="0.0 0.0 ${rod_length+ball_radius}" rpy="0.0 0.0 0.0"/>
+        </joint>
+        
+        
     </xacro:macro>
 </robot>

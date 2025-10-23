@@ -4,6 +4,7 @@
     <xacro:arg name="robot_parameters_file" default="$(find pendulum_robot_description)/config/parameters.yaml"/>
 
     <xacro:include filename="$(find pendulum_robot_description)/urdf/kinematic_chain.xacro"/>
+    <xacro:include filename="$(find pendulum_robot_description)/urdf/gazebo.xacro"/>
 
     <link name="world"/>
     <xacro:pendulum_robot_generator
