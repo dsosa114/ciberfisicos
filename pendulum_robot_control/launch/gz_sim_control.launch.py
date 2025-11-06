@@ -2,10 +2,35 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 from launch.substitutions import Command, LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.event_handlers import OnProcessExit
 import os
 from ament_index_python.packages import get_package_share_path
+
+def load_robot_controllers():
+
+    joint_state_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state',
+             'active', 'joint_state_broadcaster'],
+        output='screen'
+    )
+
+    forward_position_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state',
+             'active', 'forward_position_controller'],
+        output='screen'
+    )
+
+    forward_velocity_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state',
+             'inactive', 'forward_velocity_controller'],
+        output='screen'
+    )
+
+    return (joint_state_broadcaster,
+            forward_position_controller,
+            forward_velocity_controller)
 
 def generate_launch_description():
 
@@ -43,7 +68,10 @@ def generate_launch_description():
           urdf_path,
           ' ',
           'robot_parameters_file:=',
-          robot_parameters_file
+          robot_parameters_file,
+          ' ',
+          'activate_control:=',
+          'true'
           ]), value_type= str)
 
     robot_state_publisher_node = Node(
@@ -85,8 +113,18 @@ def generate_launch_description():
         parameters=[{'config_file':gz_bridge_config_path}]
     )
 
+    load_joint_state_broadcaster, load_forward_position_controller, load_forward_velocity_controller = load_robot_controllers()
     return LaunchDescription([
         robot_parameters_file_arg,
+        RegisterEventHandler(
+            event_handler=OnProcessExit(target_action=gz_entity_create_node,
+                                        on_exit=[load_joint_state_broadcaster])),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(target_action=load_joint_state_broadcaster,
+                                        on_exit=[load_forward_position_controller])),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(target_action=load_forward_position_controller,
+                                        on_exit=[load_forward_velocity_controller])),
         robot_state_publisher_node,
         # joint_state_publisher_gui_node,
         rviz_node,
