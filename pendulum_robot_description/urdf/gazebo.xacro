@@ -19,8 +19,7 @@
             </ros2_control>
             <gazebo>
                 <!-- <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-                    <topic>joint_states</topic>
-                    <joint_name>shoulder_lift_joint</joint_name>
+                    <parameters>$(find pendulum_robot_control)/config/simple_pendulum_controller.yaml</parameters>
                 </plugin> -->
                 <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
                     <parameters>$(find pendulum_robot_control)/config/simple_pendulum_controller.yaml</parameters>
