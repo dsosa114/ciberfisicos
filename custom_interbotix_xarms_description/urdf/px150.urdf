@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<robot name="px150">
+    <link name="base"/>
+    <link name="base_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 -1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_1_base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>  
+    <joint name="base" type="fixed">
+        <parent link="base"/>
+        <child link="base_link"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="shoulder_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0015" rpy="0.0 0.0 -1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_2_shoulder.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 0.25"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="waist" type="revolute">
+        <parent link="base_link"/>
+        <child link="shoulder_link"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14159" upper="3.14159" velocity="50.0" effort="1000.0"/>
+        <origin xyz="0 0 0.06566" rpy="0 0 0"/>
+    </joint>
+    <link name="upper_arm_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1.0 0.0 0.0 0.25"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="shoulder" type="revolute">
+        <parent link="shoulder_link"/>
+        <child link="upper_arm_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14159" upper="3.14159" velocity="50.0" effort="1000.0"/>
+        <origin xyz="0 0 0.03825" rpy="0 0 0"/>
+    </joint>
+    <link name="forearm_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_4_forearm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="1.0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="elbow" type="revolute">
+        <parent link="upper_arm_link"/>
+        <child link="forearm_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14159" upper="3.14159" velocity="50.0" effort="1000.0"/>
+        <origin xyz="0.05 0 0.15" rpy="0 0 0"/>
+    </joint>
+    <link name="wrist_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_5_wrist.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="wrist_pitch" type="revolute">
+        <parent link="forearm_link"/>
+        <child link="wrist_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14159" upper="3.14159" velocity="50.0" effort="1000.0"/>
+        <origin xyz="0.15 0 0.0" rpy="0 0 0"/>
+    </joint>
+    <link name="gripper_link">
+        <visual>
+            <origin xyz="-0.02 0.0 0.0" rpy="0.0 0.0 1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_6_gripper.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.9 0.9 0.9 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="wrist_roll" type="revolute">
+        <parent link="wrist_link"/>
+        <child link="gripper_link"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-3.14159" upper="3.14159" velocity="50.0" effort="1000.0"/>
+        <origin xyz="0.065 0 0.0" rpy="0 0 0"/>
+    </joint>
+    <link name="ee_arm_link"/>
+    <joint name="ee_arm" type="fixed">
+        <parent link="gripper_link"/>
+        <child link="ee_arm_link"/>
+        <origin xyz="0.043 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="gripper_prop_link">
+        <visual>
+            <origin xyz="-0.0685 0.0 0.0" rpy="0.0 0.0 1.57"/>
+            <geometry>
+                <mesh filename="package://custom_interbotix_xarms_description/meshes/px150_meshes/px150_7_gripper_prop.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="gripper" type="continuous">
+        <parent link="ee_arm_link"/>
+        <child link="gripper_prop_link"/>
+        <axis xyz="1 0 0"/>
+        <origin xyz="0.0055 0 0" rpy="0 0 0"/>
+    </joint>
+    
+    
+</robot>
