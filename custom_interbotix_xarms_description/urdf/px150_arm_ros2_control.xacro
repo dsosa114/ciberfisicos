@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_interbotix_xarms_description)/urdf/arm_joint_control.xacro" />
+    <xacro:macro name="arm_ros2_control" params="
+        name 
+        tf_prefix 
+        initial_positions:=${dict(waist=0.0,shoulder=0.0,elbow=0.0,wrist_pitch=0.0,wrist_roll=0.0)}
+        ">
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <!-- By default, set up controllers for simulation. This won't work on real hardware -->
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+            <xacro:arm_joint_control_description tf_prefix="${tf_prefix}" initial_positions="${initial_positions}"/>
+        </ros2_control>
+    </xacro:macro>
+    
+</robot>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="arm_joint_control_description" params="
+        tf_prefix 
+        initial_positions:=${dict(waist=0.0,shoulder=0.0,elbow=0.0,wrist_pitch=0.0,wrist_roll=0.0)}
+        ">
+        <joint name="${tf_prefix}waist">
+            <command_interface name="position"/>
+            <command_interface name="velocity"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">${initial_positions['waist']}</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+        <joint name="${tf_prefix}shoulder">
+            <command_interface name="position"/>
+            <command_interface name="velocity"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">${initial_positions['shoulder']}</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+        <joint name="${tf_prefix}elbow">
+            <command_interface name="position"/>
+            <command_interface name="velocity"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">${initial_positions['elbow']}</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+        <joint name="${tf_prefix}wrist_pitch">
+            <command_interface name="position"/>
+            <command_interface name="velocity"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">${initial_positions['wrist_pitch']}</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+        <joint name="${tf_prefix}wrist_roll">
+            <command_interface name="position"/>
+            <command_interface name="velocity"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">${initial_positions['wrist_roll']}</param>
+            </state_interface>
+            <state_interface name="velocity">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="effort">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+    </xacro:macro>
+    
+</robot>
