@@ -1,242 +1,46 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="px150">
+    <xacro:include filename="$(find custom_interbotix_xarms_description)/urdf/arm.xacro" />
     <xacro:include filename="$(find custom_interbotix_xarms_description)/urdf/gripper.xacro" />
     <xacro:include filename="$(find custom_interbotix_xarms_description)/urdf/px150_arm_ros2_control.xacro" />
 
-    <link name="world"/>
-    <link name="base_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 -${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_1_base.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="0.0 0.0 0.0 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 -${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_1_base.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-                rpy="0 0 ${pi/2}"
-                xyz="-0.0354561000 -0.0033567000 0.0253423000"/>
-            <mass value="0.766173"/>
-            <inertia
-                ixx="0.0033550000"
-                iyy="0.0013570000"
-                izz="0.0041120000"
-                ixy="-0.0001248000"
-                ixz="0.0000110400"
-                iyz="0.0002101000"/>
-        </inertial>
-    </link>  
-    <joint name="base" type="fixed">
-        <parent link="world"/>
-        <child link="base_link"/>
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-    </joint>
-    <link name="shoulder_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0015" rpy="0.0 0.0 -${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_2_shoulder.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="0.0 0.0 0.0 0.25"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.0015" rpy="0.0 0.0 -${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_2_shoulder.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-                rpy="0 0 ${pi/2}"
-                xyz="-0.0001000750 0.0000203624 0.0104104000"/>
-            <mass value="0.287601"/>
-            <inertia
-                ixx="0.0002390000"
-                iyy="0.0003634000"
-                izz="0.0004126000"
-                ixy="0.0000000010"
-                ixz="0.0000000348"
-                iyz="0.0000003613"/>
-        </inertial>
-    </link>
-    <joint name="waist" type="revolute">
-        <parent link="base_link"/>
-        <child link="shoulder_link"/>
-        <axis xyz="0 0 1"/>
-        <limit lower="-${pi}" upper="${pi}" velocity="50.0" effort="1000.0"/>
-        <origin xyz="0 0 0.06566" rpy="0 0 0"/>
-    </joint>
-    <link name="upper_arm_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="1.0 0.0 0.0 0.25"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-                rpy="0 0 ${pi/2}"
-                xyz="0.0166098000 0.0000000279 0.1157350000"/>
-            <mass value="0.338081"/>
-            <inertia
-                ixx="0.0010210000"
-                iyy="0.0011320000"
-                izz="0.0003525000"
-                ixy="-0.0000000001"
-                ixz="0.0000000000"
-                iyz="0.0001839000"/>
-        </inertial>
-    </link>
-    <joint name="shoulder" type="revolute">
-        <parent link="shoulder_link"/>
-        <child link="upper_arm_link"/>
-        <axis xyz="0 1 0"/>
-        <limit lower="-${pi}" upper="${pi}" velocity="50.0" effort="1000.0"/>
-        <origin xyz="0 0 0.03825" rpy="0 0 0"/>
-    </joint>
-    <link name="forearm_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_4_forearm.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="1.0 1.0 1.0 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_4_forearm.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-                rpy="0 0 ${pi/2}"
-                xyz="0.0848470000 -0.0001072261 0.0000000000"/>
-            <mass value="0.226542"/>
-            <inertia
-                ixx="0.0005125000"
-                iyy="0.0000498800"
-                izz="0.0005207000"
-                ixy="-0.0000013403"
-                ixz="0.0000000000"
-                iyz="0.0000000000"/>
-        </inertial>
-    </link>
-    <joint name="elbow" type="revolute">
-        <parent link="upper_arm_link"/>
-        <child link="forearm_link"/>
-        <axis xyz="0 1 0"/>
-        <limit lower="-${pi}" upper="${pi}" velocity="50.0" effort="1000.0"/>
-        <origin xyz="0.05 0 0.15" rpy="0 0 0"/>
-    </joint>
-    <link name="wrist_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_5_wrist.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="0.0 0.0 0.0 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_5_wrist.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-                rpy="0 0 ${pi/2}"
-                xyz="0.0423600000 -0.0000104110 0.0105770000"/>
-            <mass value="0.084957"/>
-            <inertia
-                ixx="0.0000308200"
-                iyy="0.0000282200"
-                izz="0.0000315200"
-                ixy="0.0000000191"
-                ixz="0.0000000023"
-                iyz="0.0000025481"/>
-        </inertial>
-    </link>
-    <joint name="wrist_pitch" type="revolute">
-        <parent link="forearm_link"/>
-        <child link="wrist_link"/>
-        <axis xyz="0 1 0"/>
-        <limit lower="-${pi}" upper="${pi}" velocity="50.0" effort="1000.0"/>
-        <origin xyz="0.15 0 0.0" rpy="0 0 0"/>
-    </joint>
-    <link name="gripper_link">
-        <visual>
-            <origin xyz="-0.02 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_6_gripper.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="black">
-                <color rgba="0.9 0.9 0.9 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="-0.02 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
-            <geometry>
-                <mesh filename="file://$(find custom_interbotix_xarms_description)/meshes/px150_meshes/px150_6_gripper.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-        <inertial>
-            <origin
-            rpy="0 0 ${pi/2}"
-            xyz="0.0216300000 0.0000000000 0.0114100000"/>
-            <mass value="0.072885"/>
-            <inertia
-            ixx="0.0000253700"
-            iyy="0.0000183600"
-            izz="0.0000167400"
-            ixy="0.0000000000"
-            ixz="0.0000000000"
-            iyz="0.0000004340"/>
-        </inertial>
-    </link>
-    <joint name="wrist_roll" type="revolute">
-        <parent link="wrist_link"/>
-        <child link="gripper_link"/>
-        <axis xyz="1 0 0"/>
-        <limit lower="-${pi}" upper="${pi}" velocity="50.0" effort="1000.0"/>
-        <origin xyz="0.065 0 0.0" rpy="0 0 0"/>
-    </joint>
-    <link name="ee_arm_link"/>
-    <joint name="ee_arm" type="fixed">
-        <parent link="gripper_link"/>
-        <child link="ee_arm_link"/>
-        <origin xyz="0.043 0.0 0.0" rpy="0.0 0.0 0.0"/>
-    </joint>
+    <xacro:arg name="tf_prefix" default="" />
+    <xacro:arg name="use_world_frame" default="true" />
+    <xacro:arg name="fixed_frame_name" default="" />
 
+    <xacro:arg name="use_gripper" default="true" />
+    <xacro:arg name="sim_gz" default="false" />
+
+    <xacro:arg name="initial_positions_file" default="$(find custom_interbotix_xarms_description)/config/initial_positions.yaml"/>
+    <!-- convert to property to use substitution in function -->
+    <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+    <xacro:property name="initial_positions_parameters" value="${xacro.load_yaml(initial_positions_file)}"/>
+    <xacro:property name="initial_positions" value="${initial_positions_parameters['initial_positions']}"/>
+
+    <xacro:property name="fixed_frame" value="$(arg fixed_frame_name)" />
+    <xacro:if value="$(arg use_world_frame)">
+        <link name="world"/>
+        <xacro:property name="fixed_frame" value="world" />
+    </xacro:if>
+    
+    <!-- Arm -->
+    <xacro:arm fixed_frame="${fixed_frame}" tf_prefix="$(arg tf_prefix)"/>
     <!-- Gripper -->
-    <xacro:gripper robot_name="px150" attach_link="ee_arm_link"/>
-    <xacro:arm_ros2_control name="px150_arm" tf_prefix=""/>
-    <gazebo>
-        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-            <parameters>$(find custom_interbotix_xarms_description)/config/custom_arm_controllers.yaml</parameters>
-        </plugin>
-    </gazebo>    
+    <xacro:if value="$(arg use_gripper)">
+        <xacro:gripper tf_prefix="$(arg tf_prefix)" attach_link="ee_arm_link"/>
+    </xacro:if>
+    
+    <xacro:arm_ros2_control name="px150_HardwareInterface" tf_prefix="$(arg tf_prefix)" initial_positions="${initial_positions}" sim_gz="$(arg sim_gz)" use_gripper="$(arg use_gripper)"/>
+
+    <xacro:if value="$(arg sim_gz)">
+        <gazebo>
+            <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <parameters>$(find custom_interbotix_xarms_description)/config/custom_arm_controllers.yaml</parameters>
+                <xacro:if value="$(arg use_gripper)">
+                    <parameters>$(find custom_interbotix_xarms_description)/config/custom_gripper_controllers.yaml</parameters>
+                </xacro:if>              
+            </plugin>
+        </gazebo> 
+    </xacro:if>
+       
 </robot>
